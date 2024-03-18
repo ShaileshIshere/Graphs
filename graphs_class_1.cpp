@@ -32,6 +32,29 @@ public:
         cout << "printing adjList : " << endl;
         print_adjList();
     }
+    void BFStraversal(int src, unordered_map<int, bool>& visited) {
+        queue<int> q;
+        q.push(src);
+        visited[src] = 1;
+        while(!q.empty()) {
+            int front = q.front(); q.pop();
+            cout << front << " ";
+            for(auto a : adjList[front]) {
+                if(!visited[a]){
+                    q.push(a);
+                    visited[a] = 1;
+                }
+            }
+        }
+    }
+    void DFStraversal(int src, unordered_map<int, bool> &visited) {
+        visited[src] = 1;
+        cout << src << " ";
+        for(auto a : adjList[src]) {
+            if(!visited[a])
+                DFStraversal(a, visited);
+        }
+    }
 
 private:
     void print_adjList() {
@@ -161,11 +184,24 @@ int main() {
             g.BFStraversal(node, visited);
         }
     }
+    unordered_map<int, bool> visited;
+    int connected=0;
+    for(int node = 0; node < n; ++node) {
+        if(!visited[node]) {
+            connected++;
+            g.BFStraversal(node, visited);
+        }
+    }
     cout << "no. of disconnected graphs : " << connected << endl;
 
-    printing in DFS => depth first search
+    // // printing in DFS => depth first search
     unordered_map<char, bool> visited;
     for(char node = 'a'; node <= e; ++node) {
+        if(!visited[node])
+            g.DFStraversal(node, visited);
+    }
+    unordered_map<int, bool> visited;
+    for(int node = 0; node <= n; ++node) {
         if(!visited[node])
             g.DFStraversal(node, visited);
     }
